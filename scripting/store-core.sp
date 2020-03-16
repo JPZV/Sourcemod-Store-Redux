@@ -32,10 +32,11 @@ char sQuery_UpdateEquippedLoadout[] = "UPDATE %s_users SET eqp_loadout_id = '%d'
 char sQuery_GetUserItems[] = "SELECT item_id, EXISTS(SELECT * FROM %s_items_loadouts WHERE %s_items_loadouts.item_id = %s_users_items.id AND %s_items_loadouts.loadout_id = %d) AS equipped, COUNT(*) AS count FROM %s_users_items INNER JOIN %s_users ON %s_users.id = %s_users_items.user_id INNER JOIN %s_items ON %s_items.id = %s_users_items.item_id WHERE %s_users.auth = %d AND ((%s_users_items.acquire_date IS NULL OR %s_items.expiry_time IS NULL OR %s_items.expiry_time = 0) OR (%s_users_items.acquire_date IS NOT NULL AND %s_items.expiry_time IS NOT NULL AND %s_items.expiry_time <> 0 AND DATE_ADD(%s_users_items.acquire_date, INTERVAL %s_items.expiry_time SECOND) > NOW()))";
 char sQuery_GetUserItems_categoryId[] = "%s AND %s_items.category_id = %d";
 char sQuery_GetUserItems_isBuyable[] = "%s AND %s_items.is_buyable = %b";
+char sQuery_GetUserItems_isEquipped[] = "%s HAVING equipped = %d";
 char sQuery_GetUserItems_isTradeable[] = "%s AND %s_items.is_tradeable = %b";
 char sQuery_GetUserItems_isRefundable[] = "%s AND %s_items.is_refundable = %b";
 char sQuery_GetUserItems_type[] = "%s AND %s_items.type = '%s'";
-char sQuery_GetUserItems_GroupByID[] = "%s GROUP BY item_id;";
+char sQuery_GetUserItems_GroupByID[] = "%s GROUP BY item_id, store_users_items.id";
 char sQuery_GetUserItemsCount[] = "SELECT COUNT(*) AS count FROM %s_users_items INNER JOIN %s_users ON %s_users.id = %s_users_items.user_id INNER JOIN %s_items ON %s_items.id = %s_users_items.item_id WHERE %s_items.name = '%s' AND %s_users.auth = %d;";
 char sQuery_GetCredits[] = "SELECT credits FROM %s_users WHERE auth = %d;";
 char sQuery_RemoveUserItem[] = "DELETE FROM %s_users_items WHERE %s_users_items.item_id = %d AND %s_users_items.user_id IN (SELECT %s_users.id FROM %s_users WHERE %s_users.auth = %d) LIMIT 1;";
@@ -1596,8 +1597,6 @@ void GetUserItems(Handle filter = null, int accountId, int loadoutId, Store_GetU
 		return;
 	}
 
-	PrintToServer("1: %i", data);
-
 	if (GetArraySize(hArray_Items) < 1)
 	{
 		Handle hPack = CreateDataPack();
@@ -1651,6 +1650,15 @@ void GetUserItems(Handle filter = null, int accountId, int loadoutId, Store_GetU
 
 		Format(sQuery, sizeof(sQuery), sQuery_GetUserItems_type, sQuery, STORE_DATABASE_PREFIX, buffer);
 	}
+    
+	Format(sQuery, sizeof(sQuery), sQuery_GetUserItems_GroupByID, sQuery);
+    
+    bool isEquipped;
+	if (GetTrieValue(filter, "is_equipped", isEquipped))
+	{
+		Format(sQuery, sizeof(sQuery), sQuery_GetUserItems_isEquipped, sQuery, STORE_DATABASE_PREFIX, isEquipped);
+	}
+    
 
 	CloseHandle(filter);
 
@@ -1661,9 +1669,7 @@ void GetUserItems(Handle filter = null, int accountId, int loadoutId, Store_GetU
 	WritePackCell(hPack, plugin);
 	WritePackCell(hPack, data);
 
-	PrintToServer("2: %i", data);
-
-	Format(sQuery, sizeof(sQuery), sQuery_GetUserItems_GroupByID, sQuery);
+    Format(sQuery, sizeof(sQuery), "%s;", sQuery);
 	Store_Local_TQuery("GetUserItems", SQLCall_GetUserItems, sQuery, hPack);
 }
 
@@ -1717,8 +1723,6 @@ public void SQLCall_GetUserItems(Handle owner, Handle hndl, const char[] error, 
 
 		index++;
 	}
-
-	PrintToServer("3: %i", arg);
 
 	Call_StartFunction(plugin, callback);
 	Call_PushCell(accountId);
