@@ -514,7 +514,7 @@ public void ChatCommand_Credits(int client)
 
 public void OnCommandGetCredits(int credits, any client)
 {
-	CPrintToChat(client, "%t%t", "Store Tag Colored", "Store Menu Credits", credits, g_currencyName);
+	CPrintToChat(client, "%t%t", "Store Tag Colored", "Store Menu Credits", g_currencyName, credits);
 }
 
 ////////////////////
