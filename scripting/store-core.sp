@@ -1312,7 +1312,7 @@ public void SQLCall_WriteItemAttributes(Handle owner, Handle hndl, const char[] 
 	}
 }
 
-bool GetLoadouts(Handle filter = null, Store_GetItemsCallback callback = INVALID_FUNCTION, Handle plugin = null, bool loadFromCache = true, any data = 0)
+bool GetLoadouts(Handle filter = null, Store_GetItemsCallback callback = INVALID_FUNCTION, Handle plugin = null, bool loadFromCache = true, any data = 0, bool isFromSQLCallback = false)
 {
 	int iSize = GetArraySize(hArray_Loadouts);
 
@@ -1364,7 +1364,7 @@ bool GetLoadouts(Handle filter = null, Store_GetItemsCallback callback = INVALID
 
 		return true;
 	}
-	else
+	else if(!isFromSQLCallback)
 	{
 		Handle hPack = CreateDataPack();
 		WritePackCell(hPack, filter);
@@ -1375,9 +1375,9 @@ bool GetLoadouts(Handle filter = null, Store_GetItemsCallback callback = INVALID
 		char sQuery[MAX_QUERY_SIZE];
 		Format(sQuery, sizeof(sQuery), sQuery_GetLoadouts, STORE_DATABASE_PREFIX);
 		Store_Local_TQuery("GetLoadouts", SQLCall_GetLoadouts, sQuery, hPack);
+		return true;
 	}
-
-	return true;
+	return false;
 }
 
 public void SQLCall_GetLoadouts(Handle owner, Handle hndl, const char[] error, any data)
@@ -1423,7 +1423,7 @@ public void SQLCall_GetLoadouts(Handle owner, Handle hndl, const char[] error, a
 		PushArrayCell(hArray_Loadouts, hArray);
 	}
 
-	GetLoadouts(filter, callback, plugin, true, data2);
+	GetLoadouts(filter, callback, plugin, true, data2, true);
 }
 
 int GetLoadoutIndex(int id)
