@@ -19,7 +19,7 @@
 #define MAX_MENU_ITEMS 32
 #define MAX_CHAT_COMMANDS 100
 
-char sQuery_Register[] = "INSERT INTO %s_users (auth, name, ip, credits, token, first_created, last_updated) VALUES ('%d', '%s', '%s', '%d', '%s', '%d', '%d') ON DUPLICATE KEY UPDATE name = '%s', ip = '%s', token = '%s', last_updated = '%d';";
+char sQuery_Register[] = "INSERT INTO %s_users (auth, name, ip, credits, token, created_at, updated_at) VALUES ('%d', '%s', '%s', '%d', '%s', FROM_UNIXTIME('%d'), FROM_UNIXTIME('%d')) ON DUPLICATE KEY UPDATE name = '%s', ip = '%s', token = '%s', updated_at = FROM_UNIXTIME('%d');";
 char sQuery_GetClientUserID[] = "SELECT id FROM %s_users WHERE auth = '%d';";
 char sQuery_GetCategories[] = "SELECT id, priority, display_name, description, require_plugin, enable_server_restriction FROM %s_categories %s;";
 char sQuery_GetItems[] = "SELECT id, priority, name, display_name, description, type, loadout_slot, price, category_id, attrs, LENGTH(attrs) AS attrs_len, is_buyable, is_tradeable, is_refundable, flags, enable_server_restriction FROM %s_items %s;";
@@ -65,7 +65,7 @@ char sQuery_RemoveDifferentCreditsFromUsers[] = "UPDATE %s_users SET credits = c
 char sQuery_RemoveDifferentCreditsFromUsers_accountIdsLength[] = "%s WHEN %d THEN %d";
 char sQuery_RemoveDifferentCreditsFromUsers_End[] = "%s END WHERE auth IN (";
 char sQuery_GetCreditsEx[] = "SELECT credits FROM %s_users WHERE auth = %d;";
-char sQuery_RegisterPluginModule[] = "INSERT INTO %s_versions (mod_name, mod_description, mod_ver_convar, mod_ver_number, server_id, first_created, last_updated) VALUES ('%s', '%s', '%s', '%s', '%d', '%d', '%d') ON DUPLICATE KEY UPDATE mod_name = VALUES(mod_name), mod_description = VALUES(mod_description), mod_ver_convar = VALUES(mod_ver_convar), mod_ver_number = VALUES(mod_ver_number), server_id = VALUES(server_id), last_updated = '%d';";
+char sQuery_RegisterPluginModule[] = "INSERT INTO %s_versions (mod_name, mod_description, mod_ver_convar, mod_ver_number, server_id, created_at, last_updated) VALUES ('%s', '%s', '%s', '%s', '%d', FROM_UNIXTIME('%d'), FROM_UNIXTIME('%d')) ON DUPLICATE KEY UPDATE mod_name = VALUES(mod_name), mod_description = VALUES(mod_description), mod_ver_convar = VALUES(mod_ver_convar), mod_ver_number = VALUES(mod_ver_number), server_id = VALUES(server_id), last_updated = FROM_UNIXTIME('%d');";
 char sQuery_CacheRestrictionsCategories[] = "SELECT category_id, server_id FROM %s_servers_categories;";
 char sQuery_CacheRestrictionsItems[] = "SELECT item_id, server_id FROM %s_servers_items;";
 char sQuery_GenerateNewToken[] = "UPDATE `%s_users` SET token = '%s' WHERE auth = '%d'";
