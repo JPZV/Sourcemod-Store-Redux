@@ -3,9 +3,9 @@
 #endif
 #define _store_core_included
 
-#define STORE_AUTHORS "Alongub, Keith Warren(Drixevel), Arrow768"
-#define STORE_VERSION "1.3.0 dev1"
-#define STORE_URL "https://github.com/SourceMod-Store/store"
+#define STORE_AUTHORS "Alongub, Keith Warren(Drixevel), Arrow768, JPZV"
+#define STORE_VERSION "1.3.1 dev0"
+#define STORE_URL "https://github.com/JPZV/Sourcemod-Store-Redux"
 
 #define STORE_PREFIX "\x04[Store] \x01"
 #define STORE_DATABASE_PREFIX "store"
