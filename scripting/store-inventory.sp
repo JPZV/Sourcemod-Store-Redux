@@ -143,40 +143,42 @@ public void GetCategoriesCallback(int[] ids, int count, any data)
 	Handle hMenu = CreateMenu(InventoryMenuSelectHandle);
 	SetMenuTitle(hMenu, "%T%T%s\n \n", "Store Menu Title", client, "Store Menu Inventory Menu", client, Store_ClientIsDeveloper(client) ? "[Dev]" : "");
 
-	Handle hPack = CreateDataPack();
+    int availableCount = 0;
+    for (int i = 0; i < count; i++)
+	{
+		char requiredPlugin[STORE_MAX_REQUIREPLUGIN_LENGTH];
+		Store_GetCategoryPluginRequired(ids[i], requiredPlugin, sizeof(requiredPlugin));
 
+		if (strlen(requiredPlugin) != 0 && !Store_IsItemTypeRegistered(requiredPlugin))
+			continue;
+        availableCount++;
+    }
+    
+    int currentIndex = 0;
 	for (int i = 0; i < count; i++)
 	{
 		char requiredPlugin[STORE_MAX_REQUIREPLUGIN_LENGTH];
 		Store_GetCategoryPluginRequired(ids[i], requiredPlugin, sizeof(requiredPlugin));
 
 		if (strlen(requiredPlugin) != 0 && !Store_IsItemTypeRegistered(requiredPlugin))
-		{
 			continue;
-		}
 
+
+        Handle hPack = CreateDataPack();
 		ResetPack(hPack, true);
 		WritePackCell(hPack, GetClientUserId(client));
 		WritePackCell(hPack, ids[i]);
+        WritePackCell(hPack, currentIndex);
+        WritePackCell(hPack, availableCount - 1);
 		WritePackCell(hPack, hMenu);
-		PrintToServer("Contents: %i - %i", GetClientUserId(client), ids[i]);
 
 		Handle filter = CreateTrie();
 		SetTrieValue(filter, "category_id", ids[i]);
 		SetTrieValue(filter, "flags", GetUserFlagBits(client));
 
 		Store_GetUserItems(filter, GetSteamAccountID(client), Store_GetClientLoadout(client), GetItemsForCategoryCallback, hPack);
+        currentIndex++;
 	}
-
-	CloseHandle(hPack);
-
-	if (GetMenuItemCount(hMenu) < 1)
-	{
-		AddMenuItem(hMenu, "", "No Categories Available", ITEMDRAW_DISABLED);
-	}
-
-	SetMenuExitBackButton(hMenu, true);
-	DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
 }
 
 public int GetItemsForCategoryCallback(int accountId, int[] ids, bool[] equipped, int[] itemCount, int count, int loadoutId, any data)
@@ -185,11 +187,22 @@ public int GetItemsForCategoryCallback(int accountId, int[] ids, bool[] equipped
 
 	int client = GetClientOfUserId(ReadPackCell(data));
 	int categoryId = ReadPackCell(data);
+    int itemIndex = ReadPackCell(data);
+    int itemsCount = ReadPackCell(data);
 	Handle hMenu = ReadPackCell(data);
-	PrintToServer("Unpacked: %N - %i", client, categoryId);
+    CloseHandle(data);
 
 	if (client <= 0 || !IsClientInGame(client) || !g_showEmptyCategories && count <= 0)
 	{
+		if(itemIndex == itemsCount)
+		{
+			if (GetMenuItemCount(hMenu) < 1)
+				AddMenuItem(hMenu, "", "No Categories Available", ITEMDRAW_DISABLED);
+
+			SetMenuExitBackButton(hMenu, true);
+			DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
+		}
+		
 		return;
 	}
 
@@ -209,8 +222,17 @@ public int GetItemsForCategoryCallback(int accountId, int[] ids, bool[] equipped
 
 	char sItem[12];
 	IntToString(categoryId, sItem, sizeof(sItem));
+    
+    AddMenuItem(hMenu, sItem, sDisplay);
+    
+    if(itemIndex == itemsCount)
+    {
+        if (GetMenuItemCount(hMenu) < 1)
+            AddMenuItem(hMenu, "", "No Categories Available", ITEMDRAW_DISABLED);
 
-	AddMenuItem(hMenu, sItem, sDisplay);
+        SetMenuExitBackButton(hMenu, true);
+        DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
+    }
 }
 
 public int InventoryMenuSelectHandle(Handle menu, MenuAction action, int client, int slot)
