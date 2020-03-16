@@ -3453,8 +3453,8 @@ public int Native_DisplayClientsMenu(Handle plugin, int numParams)
 	int client = GetNativeCell(1);
 	MenuHandler hMenuHandler = view_as<MenuHandler>(GetNativeFunction(2));
 	bool bExitBack = GetNativeCell(3);
-
-	if (client < 1 || client > MaxClients || !IsClientInGame(client) || IsFakeClient(client) || hMenuHandler == INVALID_FUNCTION)
+	
+	if (!Store_IsClientValid(client) || hMenuHandler == INVALID_FUNCTION)
 	{
 		Store_LogWarning("Client index %i has requested a clients menu and failed.", client);
 		return false;
@@ -3466,10 +3466,8 @@ public int Native_DisplayClientsMenu(Handle plugin, int numParams)
 
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if (!IsClientInGame(i) || IsFakeClient(client) || client == i)
-		{
+		if (!Store_IsClientValid(i) || client == i)
 			continue;
-		}
 
 		char sID[12];
 		IntToString(i, sID, sizeof(sID));
@@ -3484,7 +3482,7 @@ public int Native_DisplayClientsMenu(Handle plugin, int numParams)
 	{
 		AddMenuItem(hMenu, "", "[None Found]", ITEMDRAW_DISABLED);
 	}
-
+	
 	return DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
 }
 
