@@ -226,6 +226,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 
 	CreateNative("Store_Register", Native_Register);
 	CreateNative("Store_RegisterClient", Native_RegisterClient);
+    CreateNative("Store_IsClientValid", Native_IsClientValid);
 	CreateNative("Store_GetClientAccountID", Native_GetClientAccountID);
 	CreateNative("Store_GetClientUserID", Native_GetClientUserID);
 	CreateNative("Store_SaveClientToken", Native_SaveClientToken);
@@ -431,7 +432,7 @@ public void OnClientDisconnect(int client)
 
 public Action OnClientSayCommand(int client, const char[] command, const char[] sArgs)
 {
-	if (!IsClientInGame(client))
+	if (!Store_IsClientValid(client))
 	{
 		return Plugin_Continue;
 	}
@@ -2777,6 +2778,12 @@ public int Native_Register(Handle plugin, int numParams)
 public int Native_RegisterClient(Handle plugin, int numParams)
 {
 	RegisterClient(GetNativeCell(1), GetNativeCell(2));
+}
+
+public int Native_IsClientValid(Handle plugin, int numParams)
+{
+	int client = GetNativeCell(1);
+    return client > 0 && client <= MaxClients && IsClientInGame(client) && !IsFakeClient(client);
 }
 
 public int Native_GetClientAccountID(Handle plugin, int numParams)

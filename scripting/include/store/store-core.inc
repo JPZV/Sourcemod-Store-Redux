@@ -277,6 +277,13 @@ native void Store_Register(int  accountId, const char[] name = "", int credits =
 native void Store_RegisterClient(int client, int credits = 0);
 
 /**
+ * @param client			Client index.
+ *
+ * @return True if it's a valid user.
+ */
+native int Store_IsClientValid(int client);
+
+/**
  * This function was added back in 1.2.2 in order to add backwards compatibility for older modules.
  *
  * This essentially just pulls the AccountID of the client using the 'GetSteamAccountID' function.
@@ -1312,6 +1319,7 @@ public __pl_store_core_SetNTVOptional()
 
 	MarkNativeAsOptional("Store_Register");
 	MarkNativeAsOptional("Store_RegisterClient");
+	MarkNativeAsOptional("Store_IsClientValid");
 	MarkNativeAsOptional("Store_GetClientAccountID");
 	MarkNativeAsOptional("Store_GetClientUserID");
 	MarkNativeAsOptional("Store_SaveClientToken");
