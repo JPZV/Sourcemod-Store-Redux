@@ -307,7 +307,7 @@ void OpenGiftingMenu(int client)
 {
 	for (int i = 1; i <= MaxClients; i++)
 	{
-		if (!IsClientInGame(i) || IsFakeClient(i))
+		if (!Store_IsClientValid(i))
 		{
 			continue;
 		}
@@ -342,7 +342,7 @@ public int GiftTypeMenuSelectHandle(Handle menu, MenuAction action, int client, 
 			GetMenuItem(menu, slot, sInfo, sizeof(sInfo));
 
 			bool bType = StrEqual(sInfo, "credits");
-
+			
 			switch (g_drop_enabled)
 			{
 				case true:OpenChooseActionMenu(client, bType ? GiftType_Credits : GiftType_Item);
@@ -436,7 +436,39 @@ public int ChooseActionMenuSelectHandle(Handle menu, MenuAction action, int clie
 
 void OpenChoosePlayerMenu(int client, GiftType giftType)
 {
-	Store_DisplayClientsMenu(client, giftType == GiftType_Credits ? ChoosePlayerCreditsMenuSelectHandle : ChoosePlayerItemMenuSelectHandle);
+	if (!Store_IsClientValid(client))
+	{
+		Store_LogWarning("Client index %i has requested a clients menu and failed.", client);
+		return;
+	}
+
+	Handle hMenu = CreateMenu(giftType == GiftType_Credits ? ChoosePlayerCreditsMenuSelectHandle : ChoosePlayerItemMenuSelectHandle);
+	SetMenuTitle(hMenu, "Choose a client:");
+	SetMenuExitBackButton(hMenu, true);
+
+	for (int i = 1; i <= MaxClients; i++)
+	{
+		if (!Store_IsClientValid(i) || client == i)
+			continue;
+
+		char sID[12];
+		IntToString(i, sID, sizeof(sID));
+
+		char sName[MAX_NAME_LENGTH];
+		GetClientName(i, sName, sizeof(sName));
+		
+	
+		AddMenuItem(hMenu, sID, sName);
+	}
+
+	if (GetMenuItemCount(hMenu) < 1)
+	{
+		AddMenuItem(hMenu, "", "[None Found]", ITEMDRAW_DISABLED);
+	}
+	
+	DisplayMenu(hMenu, client, MENU_TIME_FOREVER);
+	
+	//Store_DisplayClientsMenu(client, giftType == GiftType_Credits ? ChoosePlayerCreditsMenuSelectHandle : ChoosePlayerItemMenuSelectHandle);
 }
 
 public int ChoosePlayerCreditsMenuSelectHandle(Handle menu, MenuAction action, int client, int slot)
@@ -447,7 +479,7 @@ public int ChoosePlayerCreditsMenuSelectHandle(Handle menu, MenuAction action, i
 		{
 			char sMenuItem[64];
 			GetMenuItem(menu, slot, sMenuItem, sizeof(sMenuItem));
-			OpenSelectCreditsMenu(client, GiftAction_Send, GetClientOfUserId(StringToInt(sMenuItem)));
+					OpenSelectCreditsMenu(client, GiftAction_Send, StringToInt(sMenuItem));
 		}
 		case MenuAction_Cancel:
 		{
@@ -468,7 +500,7 @@ public int ChoosePlayerItemMenuSelectHandle(Handle menu, MenuAction action, int 
 		{
 			char sMenuItem[64];
 			GetMenuItem(menu, slot, sMenuItem, sizeof(sMenuItem));
-			OpenSelectItemMenu(client, GiftAction_Send, GetClientOfUserId(StringToInt(sMenuItem)));
+			OpenSelectItemMenu(client, GiftAction_Send, StringToInt(sMenuItem));
 		}
 		case MenuAction_Cancel:
 		{
@@ -488,6 +520,7 @@ void OpenSelectCreditsMenu(int client, GiftAction giftAction, int giftTo = -1)
 		return;
 	}
 
+	
 	Handle menu = CreateMenu(CreditsMenuSelectItem);
 
 	SetMenuTitle(menu, "Select %s:", g_currencyName);
@@ -527,7 +560,8 @@ public int CreditsMenuSelectItem(Handle menu, MenuAction action, int client, int
 			int giftAction = StringToInt(values[0]);
 			int giftTo = StringToInt(values[1]);
 			int credits = StringToInt(values[2]);
-
+			
+		
 			Handle hPack = CreateDataPack();
 			WritePackCell(hPack, GetClientUserId(client));
 			WritePackCell(hPack, giftAction);
@@ -557,6 +591,7 @@ public void GetCreditsCallback(int credits, any hPack)
 	int giftCredits = ReadPackCell(hPack);
 
 	CloseHandle(hPack);
+	
 
 	if (giftCredits > credits)
 	{
@@ -835,9 +870,8 @@ public void DropItemCallback(int accountId, int itemId, any client)
 void AskForPermission(int client, int giftTo, GiftType giftType, int value)
 {
 	char sName[MAX_NAME_LENGTH];
-
 	GetClientName(giftTo, sName, sizeof(sName));
-	CPrintToChatEx(client, giftTo, "%t%t", "Store Tag Colored", "Gift Waiting to accept", client, sName);
+	CPrintToChatEx(client, giftTo, "%t%t", "Store Tag Colored", "Gift Waiting to accept", sName);
 
 	char what[64];
 	switch (giftType)
@@ -847,7 +881,7 @@ void AskForPermission(int client, int giftTo, GiftType giftType, int value)
 	}
 
 	GetClientName(client, sName, sizeof(sName));
-	CPrintToChatEx(giftTo, client, "%t%t", "Store Tag Colored", "Gift Request Accept", client, sName, what);
+	CPrintToChatEx(giftTo, client, "%t%t", "Store Tag Colored", "Gift Request Accept", sName, what);
 
 	g_giftRequests[giftTo][GiftRequestActive] = true;
 	g_giftRequests[giftTo][GiftRequestSender] = client;
