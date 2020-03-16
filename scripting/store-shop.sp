@@ -592,13 +592,16 @@ public int EquipAfterPurchaseMenuHandle(Handle menu, MenuAction action, int clie
 			{
 				int loadout = Store_GetClientLoadout(client);
 				int itemId = StringToInt(sMenuItem);
+                
+                if(Store_InventoryEquipItem(client, itemId))
+                {                    
+                    Store_SetItemEquippedState(GetSteamAccountID(client), itemId, loadout, true, EquipItemCallback);
 
-				Store_SetItemEquippedState(GetSteamAccountID(client), itemId, loadout, true, EquipItemCallback);
+                    char displayName[STORE_MAX_DISPLAY_NAME_LENGTH];
+                    Store_GetItemDisplayName(itemId, displayName, sizeof(displayName));
 
-				char displayName[STORE_MAX_DISPLAY_NAME_LENGTH];
-				Store_GetItemDisplayName(itemId, displayName, sizeof(displayName));
-
-				CPrintToChat(client, "%t%t", "Store Tag Colored", "Item Purchase Equipped", displayName, loadout);
+                    CPrintToChat(client, "%t%t", "Store Tag Colored", "Item Purchase Equipped", displayName, loadout);
+                }
 			}
 
 			OpenShop(client);
