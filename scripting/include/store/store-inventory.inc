@@ -16,6 +16,16 @@ enum Store_ItemUseAction
 typedef Store_ItemUseCallback = function Store_ItemUseAction(int client, int itemId, bool equipped);
 
 /**
+ * Equip item from the client's inventory.
+ *
+ * @param client			Client index.
+ * @param itemId			Item ID.
+ *
+ * @noreturn
+ */
+native bool Store_InventoryEquipItem(int client, int itemId);
+
+/**
  * Opens the inventory menu for a client.
  *
  * @param client			Client index.
@@ -88,7 +98,9 @@ public SharedPlugin __pl_store_inventory =
 
 #if defined REQUIRE_PLUGIN
 public __pl_store_inventory_SetNTVOptional()
-{
+{	
+	MarkNativeAsOptional("Store_InventoryEquipItem");
+
 	MarkNativeAsOptional("Store_OpenInventory");
 	MarkNativeAsOptional("Store_OpenInventoryCategory");
 	

@@ -44,6 +44,7 @@ public APLRes AskPluginLoad2(Handle myself, bool late, char[] error, int err_max
 	CreateNative("Store_IsItemTypeRegistered", Native_IsItemTypeRegistered);
 
 	CreateNative("Store_CallItemAttrsCallback", Native_CallItemAttrsCallback);
+    CreateNative("Store_InventoryEquipItem", Native_InventoryEquipItem);
 
 	RegPluginLibrary("store-inventory");
 	return APLRes_Success;
@@ -522,6 +523,44 @@ void RegisterItemType(const char[] type, Handle plugin, Store_ItemUseCallback us
 
 	int index = PushArrayCell(g_itemTypes, itemTypeHandle);
 	SetTrieValue(g_itemTypeNameIndex, type, index);
+}
+
+public int Native_InventoryEquipItem(Handle plugin, int numParams)
+{
+    int client = GetNativeCell(1);
+    int itemId = GetNativeCell(2);
+    
+    char type[STORE_MAX_TYPE_LENGTH];
+    Store_GetItemType(itemId, type, sizeof(type));
+
+    int itemTypeIndex = -1;
+    GetTrieValue(g_itemTypeNameIndex, type, itemTypeIndex);
+
+    if (itemTypeIndex == -1)
+    {
+        CPrintToChat(client, "%t%t", "Store Tag Colored", "Item type not registered", type);
+        OpenInventoryCategory(client, Store_GetItemCategory(itemId));
+        return false;
+    }
+    
+    Store_ItemUseAction callbackValue = Store_DoNothing;
+
+    Handle itemType = GetArrayCell(g_itemTypes, itemTypeIndex);
+    ResetPack(itemType);
+
+    Handle plugin = view_as<Handle>(ReadPackCell(itemType));
+    Store_ItemUseCallback callback = view_as<Store_ItemUseCallback>(ReadPackFunction(itemType));
+
+    Call_StartFunction(plugin, callback);
+    Call_PushCell(client);
+    Call_PushCell(itemId);
+    Call_PushCell(false);
+    Call_Finish(callbackValue);
+
+    if (callbackValue == Store_DoNothing)
+        return false;
+    
+    return true;
 }
 
 public int Native_OpenInventory(Handle plugin, int numParams)
