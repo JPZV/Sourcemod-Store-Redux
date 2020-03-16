@@ -108,6 +108,12 @@
 		"ru"			"Вы сняли {1}."
 	}
 	
+	"Unequipped item apply next spawn format"
+	{
+		"#format"		"{1:s}"
+		"en"			"You have unequipped {1}. It will take effect in your next spawn."
+	}
+	
 	"Must be alive to equip"
 	{
 		"ru"			"Вы должны быть живы, чтобы надеть этот предмет."
@@ -201,6 +207,12 @@
 	{
 		"#format"		"{1:s},{2:d},{3:s}"
 		"ru"			"Вы уверены, что хотите сдать предмет {1} за {2} {3}?"
+	}
+	
+	"Equipped item apply next spawn format"
+	{
+		"#format"		"{1:s}"
+		"en"			"You have equipped {1}. It will take effect in your next spawn."
 	}
 	
 	"Equipped item apply next spawn"

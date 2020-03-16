@@ -108,6 +108,12 @@
 		"en"			"You have unequipped {1}."
 	}
 	
+	"Unequipped item apply next spawn format"
+	{
+		"#format"		"{1:s}"
+		"en"			"You have unequipped {1}. It will take effect in your next spawn."
+	}
+	
 	"Must be alive to equip"
 	{
 		"en"			"You must be alive to equip this item."
@@ -203,6 +209,12 @@
 		"en"			"Are you sure you want to refund {1} for {2} {3}?"
 	}
 	
+	"Equipped item apply next spawn format"
+	{
+		"#format"		"{1:s}"
+		"en"			"You have equipped {1}. It will take effect in your next spawn."
+	}
+
 	"Equipped item apply next spawn"
 	{
 		"en"			"You've equipped an item. It will take effect in your next spawn."
