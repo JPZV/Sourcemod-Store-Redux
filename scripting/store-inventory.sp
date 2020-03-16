@@ -21,8 +21,8 @@ bool g_showMenuDescriptions;
 bool g_showItemsMenuDescriptions;
 int g_itemMenuOrder;
 
-Handle g_itemTypes;
-Handle g_itemTypeNameIndex;
+Handle g_itemTypes = INVALID_HANDLE;
+Handle g_itemTypeNameIndex = INVALID_HANDLE;
 
 char g_currencyName[64];
 
@@ -56,9 +56,11 @@ public void OnPluginStart()
 	LoadTranslations("store.phrases");
 
 	CreateConVar(PLUGIN_VERSION_CONVAR, STORE_VERSION, PLUGIN_NAME, FCVAR_REPLICATED | FCVAR_NOTIFY | FCVAR_SPONLY | FCVAR_DONTRECORD);
-
-	g_itemTypes = CreateArray();
-	g_itemTypeNameIndex = CreateTrie();
+    
+    if (g_itemTypes == INVALID_HANDLE)
+        g_itemTypes = CreateArray();
+    if (g_itemTypeNameIndex == INVALID_HANDLE)
+        g_itemTypeNameIndex = CreateTrie();
 
 	LoadConfig("Inventory", "configs/store/inventory.cfg");
 }
@@ -509,6 +511,11 @@ public void UseItemCallback(int accountId, int itemId, any data)
 
 void RegisterItemType(const char[] type, Handle plugin, Store_ItemUseCallback useCallback, Store_ItemGetAttributesCallback attrsCallback = INVALID_FUNCTION)
 {
+    if (g_itemTypes == INVALID_HANDLE)
+        g_itemTypes = CreateArray();
+    if (g_itemTypeNameIndex == INVALID_HANDLE)
+        g_itemTypeNameIndex = CreateTrie();
+    
 	int itemType;
 	if (GetTrieValue(g_itemTypeNameIndex, type, itemType))
 	{
