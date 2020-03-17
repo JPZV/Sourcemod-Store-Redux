@@ -1,0 +1,424 @@
+"Phrases"
+{
+	"Store Tag"
+	{
+		"#format"		""
+		"es"			"[Tienda] "
+	}
+	
+	"Store Tag Colored"
+	{
+		"#format"		""
+		"es"			"{GREEN}[Tienda] {DEFAULT}"
+	}
+	
+	"Store Menu Title"
+	{
+		"es"			"Tienda WineWald: "
+	}
+	
+	"Store Menu Credits"
+	{
+		"#format"		"{1:s},{2:d}"
+		"es"			"{1}: {2}"
+	}
+	
+	"Store Menu Main Menu"
+	{
+		"#format"		"{1:s}"
+		"es"			"Menu principal [{1}]"
+	}
+	
+	"Store Menu Shop Menu"
+	{
+		"es"			"Menu de compras"
+	}
+	
+	"Store Menu Inventory Menu"
+	{
+		"es"			"Inventario"
+	}
+	
+	"Store Menu Gifting Menu"
+	{
+		"es"			"Menu de regalos"
+	}
+	
+	"Store Menu Refunds Menu"
+	{
+		"es"			"Menu de reembolsos"
+	}
+	
+	"Store Menu Loadouts Menu"
+	{
+		"es"			"Menu de Loadouts"
+	}
+	
+	"Store Menu Trades Menu"
+	{
+		"es"			"Menu de intercambios"
+	}
+	
+	"Loadout"
+	{
+		"es"			"Loadout"
+	}
+	
+	"No categories available"
+	{
+		"es"			"No hay categorias disponibles"
+	}
+	
+	"No items in this category"
+	{
+		"es"			"No hay productos en esta categoria."
+	}
+	
+	"Inventory category is empty"
+	{
+		"es"			"No tienes ningún producto de esta categoria."
+	}
+	
+	"Item type not registered"
+	{
+		"#format"		"{1:s}"
+		"es"			"El producto de tipo '{1}' no fue registrado por ningún plugin."
+	}
+	
+	"Not enough credits to buy"
+	{
+		"#format"		"{1:s}"
+		"es"			"No tienes {1} suficientes para comprar esto."
+	}
+	
+	"No item attributes"
+	{
+		"es"			"No se encontraron atributos de este producto."
+	}
+	
+	"Equipped item"
+	{
+		"#format"		"{1:s}"
+		"es"			"Equipaste el {1}."
+	}
+	
+	"Unequipped item"
+	{
+		"#format"		"{1:s}"
+		"es"			"Te haz sacado el {1}."
+	}
+	
+	"Unequipped item apply next spawn format"
+	{
+		"#format"		"{1:s}"
+		"es"			"Te haz sacado el {1}. Sutrirá efecto en el próximo spawn."
+	}
+	
+	"Must be alive to equip"
+	{
+		"es"			"Tienes que estar vivo para equipar este producto."
+	}
+	
+	"Must be alive to use"
+	{
+		"es"			"Tienes que estar vivo para usar este producto."
+	}
+	
+	"Must be human to equip"
+	{
+		"es"			"Tienes que ser un humano para equipar este producto."
+	}
+	
+	"Must be human to use"
+	{
+		"es"			"Tienes que ser un humano para usar este producto."
+	}
+	
+	"Limit item uses in a round"
+	{
+		"#format"		"{1:s}"
+		"es"			"Solo puedes ocupar este producto {1} veces por ronda."
+	}
+	
+	"Player model unsupported"
+	{
+		"es"			"Tu personaje no soporta este producto."
+	}
+	
+	"Received Credits"
+	{
+		"#format"		"{1:d},{2:s}"
+		"es"			"Acabas de recibir {1} {2}!"
+	}
+	
+	"Deducted Credits"
+	{
+		"#format"		"{1:d},{2:s}"
+		"es"			"Acabas de perder {1} {2}!"
+	}
+	
+	"Deducted Credits Less Than Zero"
+	{
+		"#format"		"{1:s}"
+		"es"			"Tus {1} fueron puestos en 0 porque bajaron a negativo!"
+	}
+	
+	"Item Purchase Confirmation"
+	{
+		"#format"		"{1:s}"
+		"es"			"Estás seguro que quieres comprar {1}?"
+	}
+	
+	"Item Purchase Successful"
+	{
+		"#format"		"{1:s}"
+		"es"			"Compraste '{olive}{1}{default}'!"
+	}
+	
+	"Item Purchase Menu Title"
+	{
+		"#format"		"{1:s}"
+		"es"			"Equipar {1} ahora?"
+	}
+	
+	"Item Purchase Equipped"
+	{
+		"#format"		"{1:s},{2:d}"
+		"es"			"Equipaste '{olive}{1}{default}' en el loadout {olive}{2}{default}.!"
+	}
+	
+	"Refund"
+	{
+		"es"			"Reembolso"
+	}
+	
+	"Gift"
+	{
+		"es"			"Regalo"
+	}
+	
+	"Refund Message"
+	{
+		"#format"		"{1:s},{2:d},{3:s}"
+		"es"			"Acabas de reembolsar {1} por {2} {3}."
+	}
+	
+	"Item Refund Confirmation"
+	{
+		"#format"		"{1:s},{2:d},{3:s}"
+		"es"			"Estás seguro que quieres reembolsar {1} por {2} {3}?"
+	}
+	
+	"Equipped item apply next spawn format"
+	{
+		"#format"		"{1:s}"
+		"es"			"Te equipaste {1}. Sutrirá efecto en el próximo spawn."
+	}
+
+	"Equipped item apply next spawn"
+	{
+		"es"			"Te equipaste un producto. Sutrirá efecto en el próximo spawn."
+	}
+	
+	"Shop"
+	{
+		"es"			"Tienda"
+	}
+	
+	"Shop Description"
+	{
+		"es"			"Compra cosas increíbles aquí!"
+	}
+	
+	"Inventory"
+	{
+		"es"			"Inventario"
+	}
+	
+	"Inventory Description"
+	{
+		"es"			"Equipa o usa tus productos."
+	}
+	
+	"Refund Description"
+	{
+		"es"			"No satisfecho con algo? Reembolsalo aquí."
+	}
+	
+	"Gift Description"
+	{
+		"es"			"Regala dinero o productos a alguien necesitado!"
+	}
+	
+	"Loadout Description"
+	{
+		"es"			"Configura todos tus productos."
+	}
+	
+	"Trade"
+	{
+		"es"			"Intercambiar"
+	}
+	
+	"Trade Description"
+	{
+		"es"			"Intercambia tus productos con otros."
+	}
+	
+	"Gift Delivery Method"
+	{
+		"es"			"Como quieres entregar tu regalo?"
+	}
+	
+	"Gift Method Send"
+	{
+		"es"			"Enviar al jugador"
+	}
+	
+	"Gift Method Drop"
+	{
+		"es"			"Soltar en el juego"
+	}
+	
+	"Item"
+	{
+		"es"			"Producto"
+	}
+	
+	"Gift Credit Confirmation"
+	{
+		"#format"		"{1:s},{2:d},{3:s}"
+		"es"			"Estás seguro que quieres dar {2} {3} a {1}?"
+	}
+	
+	"Gift Item Confirmation"
+	{
+		"#format"		"{1:s},{2:s}"
+		"es"			"Estás seguro que le quieres dar un {2} a {1}?"
+	}
+	
+	"Drop Credit Confirmation"
+	{
+		"#format"		"{1:d},{2:s}"
+		"es"			"Estás seguro que quieres lanzar {1} {2}?"
+	}
+	
+	"Drop Item Confirmation"
+	{
+		"#format"		"{1:s}"
+		"es"			"Estás seguro que quieres lanzar un {1}?"
+	}
+	
+	"Gift Item Dropped"
+	{
+		"#format"		"{1:s}"
+		"es"			"lanzaste un {olive}{1}{default}!"
+	}
+	
+	"Gift Credits Dropped"
+	{
+		"#format"		"{1:d}{2:s}"
+		"es"			"Lanzaste {olive}{1}{default} {2}!"
+	}
+	
+	"Gift Credits Found"
+	{
+		"#format"		"{1:d},{2:s}"
+		"es"			"Encontraste {olive}{1}{default} {2}!"
+	}
+	
+	"Gift Item Found"
+	{
+		"#format"		"{1:s}"
+		"es"			"Encontraste un {olive}{1}{default}!"
+	}
+	
+	"No items"
+	{
+		"es"			"No tienes productos."
+	}
+	
+	"Gift Request Accept"
+	{
+		"#format"		"{1:s},{2:s}"
+		"es"			"{teamcolor}{1} {default} te quiere dar {olive}{2}{default}. Escribe {teamcolor}!accept {default}para aceptar el regalo."
+	}
+	
+	"Gift Waiting to accept"
+	{
+		"#format"		"{1:s}"
+		"es"			"Esperando que {teamcolor}{1} {default}acepte el regalo."
+	}
+	
+	"Gift Cancel"
+	{
+		"#format"		""
+		"es"			"Cancelaste el regalo antes de que lo aceptaran."
+	}
+	
+	"Gift Active Session"
+	{
+		"#format"		""
+		"es"			"Solo puedes tener un regalo pendiente a la vez. Escribe !cancel y prueba de nuevo."
+	}
+	
+	"Not enough credits"
+	{
+		"#format"		"{1:s}"
+		"es"			"No tienes suficientes {1}."
+	}
+	
+	"Gift accepted - sender"
+	{
+		"#format"		"{1:s}"
+		"es"			"{teamcolor}{1} {default}aceptó tu regalo."
+	}
+	
+	"Gift accepted - receiver"
+	{
+		"#format"		"{1:s}"
+		"es"			"Aceptaste el regalo de{teamcolor}{1}{default}."
+	}
+	
+	"Already purchased item"
+	{
+		"#format"		"{1:s}"
+		"es"			"Ya habias comprado este producto: {1}"
+	}
+	
+	"You can't wear this item"
+	{
+		"es"			"No puedes ocupar este producto."
+	}
+	
+	"Reloading categories and items"
+	{
+		"es"			"Recargando categorías y productos..."
+	}
+	
+	"Reloaded categories"
+	{
+		"es"			"Se cargaron todas las categorias correctamente."
+	}
+	
+	"Reloaded items"
+	{
+		"es"			"Se cargaron todos los productos correctamente."
+	}
+	
+	"Check console for reload outputs"
+	{
+		"es"			"Comprueba la consola para más información sobre la recarga."
+	}
+	
+	"Store Developer Toggled"
+	{
+		"#format"		"{1:s}"
+		"es"			"Modo desarrollador: [{1}]"
+	}
+	
+	"Cannot access while developer"
+	{
+		"es"			"No puedes acceder a este menú mientras estás en modo desarrollador."
+	}
+}
