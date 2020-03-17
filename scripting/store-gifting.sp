@@ -195,7 +195,7 @@ public void DropGetCreditsCallback(int credits, any hPack)
 
 	if (credits >= needed)
 	{
-		Store_RemoveCredits(GetSteamAccountID(client), needed, DropGiveCreditsCallback, GetClientOfUserId(client));
+		Store_RemoveCredits(GetSteamAccountID(client), needed, DropGiveCreditsCallback, GetClientUserId(client));
 	}
 	else
 	{
@@ -777,17 +777,20 @@ void OpenGiveItemConfirmMenu(int client, const char[] sValue)
 	GiftAction giftAction = view_as<GiftAction>(StringToInt(sValues[0]));
 	int giftTo = StringToInt(sValues[1]);
 	int itemId = StringToInt(sValues[2]);
-
-	char sName[MAX_NAME_LENGTH];
-	GetClientName(giftTo, sName, sizeof(sName));
-
+	
 	char sDisplayName[STORE_MAX_DISPLAY_NAME_LENGTH];
 	Store_GetItemDisplayName(itemId, sDisplayName, sizeof(sDisplayName));
 
 	Handle menu = CreateMenu(ItemConfirmMenuSelectItem);
+	
 	switch (giftAction)
 	{
-		case GiftAction_Send:SetMenuTitle(menu, "%T", "Gift Item Confirmation", client, sName, sDisplayName);
+		case GiftAction_Send:
+		{
+			char sName[MAX_NAME_LENGTH];
+			GetClientName(giftTo, sName, sizeof(sName));
+			SetMenuTitle(menu, "%T", "Gift Item Confirmation", client, sName, sDisplayName);
+		}
 		case GiftAction_Drop:SetMenuTitle(menu, "%T", "Drop Item Confirmation", client, sDisplayName);
 	}
 
